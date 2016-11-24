@@ -29,7 +29,8 @@ build/%.o: extra/test/%.cpp
 all: test
 
 test: $(OBJS)
-	g++ -o test $(OBJS) $(LIBS)
+	g++ -o gtest $(OBJS) $(LIBS)
+	./gtest
 
 clean:
 	@rm -rf build
