@@ -18,8 +18,10 @@ extern "C" {
 #include <stdint.h>
 #include <unistd.h>
 
+#ifndef ESP32
 /* missing in arduino headers */
 typedef long ssize_t;
+#endif
 
 /**
  * All of the different kinds of CBOR values.

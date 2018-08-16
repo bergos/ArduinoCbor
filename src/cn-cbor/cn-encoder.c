@@ -12,6 +12,10 @@ extern "C" {
 #include <stdbool.h>
 #include <assert.h>
 
+#ifdef ESP32
+#include <lwip/def.h> // for htons() and htonl()
+#endif
+
 #include "cn-cbor/cn-cbor.h"
 #include "cbor.h"
 
