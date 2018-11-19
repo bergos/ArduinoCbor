@@ -14,6 +14,12 @@ extern "C" {
 #include <assert.h>
 #include <math.h>
 
+#ifdef ESP32
+#include <lwip/def.h>
+#define ntohs lwip_ntohs
+#define ntohl lwip_ntohl
+#endif
+
 #include "cn-cbor/cn-cbor.h"
 #include "cbor.h"
 

@@ -18,8 +18,8 @@ extern "C" {
 #include <stdint.h>
 #include <unistd.h>
 
-#ifndef ESP32
-/* missing in arduino headers */
+#ifdef __AVR__
+/* missing in Arduino AVR core headers */
 typedef long ssize_t;
 #endif
 
