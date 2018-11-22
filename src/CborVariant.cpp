@@ -37,11 +37,11 @@ bool CborVariant::isValid() {
 }
 
 bool CborVariant::isString() {
-  return isValid() && raw->type == CN_CBOR_BYTES || raw->type == CN_CBOR_TEXT;
+  return isValid() && (raw->type == CN_CBOR_BYTES || raw->type == CN_CBOR_TEXT);
 }
 
 bool CborVariant::isInteger() {
-  return isValid() && raw->type == CN_CBOR_UINT || raw->type == CN_CBOR_INT;
+  return isValid() && (raw->type == CN_CBOR_UINT || raw->type == CN_CBOR_INT);
 }
 
 bool CborVariant::isObject() {
@@ -63,7 +63,7 @@ const char* CborVariant::asString() {
 
   if (raw->v.str[raw->length] != 0) {
     char* tmp = (char*)buffer.alloc(raw->length + 1);
-    
+
     for (int i = 0; i < raw->length; i++) {
       tmp[i] = raw->v.str[i];
     }
