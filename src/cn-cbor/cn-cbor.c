@@ -14,12 +14,6 @@ extern "C" {
 #include <assert.h>
 #include <math.h>
 
-#ifdef ESP32
-#include <lwip/def.h>
-#define ntohs lwip_ntohs
-#define ntohl lwip_ntohl
-#endif
-
 #include "cn-cbor/cn-cbor.h"
 #include "cbor.h"
 
@@ -54,31 +48,21 @@ static double decode_half(int half) {
 }
 #endif /* CBOR_NO_FLOAT */
 
-/* Fix these if you can't do non-aligned reads */
-#define ntoh8p(p) (*(unsigned char*)(p))
-
-#ifndef CBOR_ALIGN_READS
-#define ntoh16p(p) (ntohs(*(unsigned short*)(p)))
-#define ntoh32p(p) (ntohl(*(unsigned long*)(p)))
-#else
-static uint16_t ntoh16p(unsigned char *p) {
-    uint16_t tmp;
-    memcpy(&tmp, p, sizeof(tmp));
-    return ntohs(tmp);
+static uint8_t ntoh8p(const uint8_t* p) {
+  return *p;
 }
 
-static uint32_t ntoh32p(unsigned char *p) {
-    uint32_t tmp;
-    memcpy(&tmp, p, sizeof(tmp));
-    return ntohl(tmp);
+static uint16_t ntoh16p(const uint8_t* p) {
+  return ((uint16_t)p[0] << 8) | p[1];
 }
-#endif /* CBOR_ALIGN_READS */
 
-static uint64_t ntoh64p(unsigned char *p) {
-  uint64_t ret = ntoh32p(p);
-  ret <<= 32;
-  ret += ntoh32p(p+4);
-  return ret;
+static uint32_t ntoh32p(const uint8_t* p) {
+  return ((uint32_t)p[0] << 24) | ((uint32_t)p[1] << 16) | ((uint32_t)p[2] << 8) | p[3];
+}
+
+static uint64_t ntoh64p(const uint8_t* p) {
+  return ((uint64_t)p[0] << 56) | ((uint64_t)p[1] << 48) | ((uint64_t)p[2] << 40) | ((uint64_t)p[3] << 32) |
+         ((uint64_t)p[4] << 24) | ((uint64_t)p[5] << 16) | ((uint64_t)p[6] << 8) | p[7];
 }
 
 static cn_cbor_type mt_trans[] = {
