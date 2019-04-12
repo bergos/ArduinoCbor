@@ -12,22 +12,24 @@ extern "C" {
 #include <stdbool.h>
 #include <assert.h>
 
-#ifdef ESP32
-#include <lwip/def.h> // for htons() and htonl()
-#endif
-
 #include "cn-cbor/cn-cbor.h"
 #include "cbor.h"
 
-#define hton8p(p) (*(uint8_t*)(p))
-#define hton16p(p) (htons(*(uint16_t*)(p)))
-#define hton32p(p) (htonl(*(uint32_t*)(p)))
-static uint64_t hton64p(const uint8_t *p) {
-  /* TODO: does this work on both BE and LE systems? */
-  uint64_t ret = hton32p(p);
-  ret <<= 32;
-  ret |= hton32p(p+4);
-  return ret;
+static uint8_t hton8p(const uint8_t* p) {
+  return *p;
+}
+
+static uint16_t hton16p(const uint8_t* p) {
+  return ((uint16_t)p[0] << 8) | p[1];
+}
+
+static uint32_t hton32p(const uint8_t* p) {
+  return ((uint32_t)p[0] << 24) | ((uint32_t)p[1] << 16) | ((uint32_t)p[2] << 8) | p[3];
+}
+
+static uint64_t hton64p(const uint8_t* p) {
+  return ((uint64_t)p[0] << 56) | ((uint64_t)p[1] << 48) | ((uint64_t)p[2] << 40) | ((uint64_t)p[3] << 32) |
+         ((uint64_t)p[4] << 24) | ((uint64_t)p[5] << 16) | ((uint64_t)p[6] << 8) | p[7];
 }
 
 typedef struct _write_state
@@ -99,12 +101,12 @@ static void _write_positive(cn_write_state *ws, cn_cbor_type typ, uint64_t val) 
   } else if (val < 65536) {
     uint16_t be16 = (uint16_t)val;
     ensure_writable(3);
-    be16 = hton16p(&be16);
+    be16 = hton16p((const uint8_t*)&be16);
     write_byte_and_data(ib | 25, (const void*)&be16, 2);
   } else if (val < 0x100000000L) {
     uint32_t be32 = (uint32_t)val;
     ensure_writable(5);
-    be32 = hton32p(&be32);
+    be32 = hton32p((const uint8_t*)&be32);
     write_byte_and_data(ib | 26, (const void*)&be32, 4);
   } else {
     uint64_t be64;
