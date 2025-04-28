@@ -28,6 +28,23 @@ void CborObject::set(const char* key, CBOR_INT_T value) {
   set(key, CborVariant(buffer, value));
 }
 
+void CborObject::set(const char* key, float value) {
+  cn_cbor_errback err;
+
+  // build a 32-bit float node (major-type 7, AI 26 → 0xFA)
+  cn_cbor* f32 = cn_cbor_float_create(value, &buffer.context, &err);
+  cn_cbor_mapput_string(raw, key, f32, &buffer.context, &err);
+}
+
+void CborObject::set(const char* key, bool value) {
+  cn_cbor_errback err;
+
+  cn_cbor* b = value ? cn_cbor_true_create (&buffer.context, &err)
+                     : cn_cbor_false_create(&buffer.context, &err);
+  cn_cbor_mapput_string(raw, key, b, &buffer.context, &err);
+}
+
+
 void CborObject::set(const char* key, CborObject value) {
   set(key, CborVariant(buffer, value));
 }
