@@ -44,3 +44,23 @@ int    cnt    = obj.get("cnt").asInteger();
 arena.clear();                  // zero-alloc reset
 new (&root) CborObject(arena);  // placement-new
 
+```
+
+## API additions
+
+```cpp
+// ---------- CborObject.h ----------
+void set(const char* key, float  value);   // 0xFA
+void set(const char* key, double value);   // 0xFB
+void set(const char* key, bool   value);   // 0 or 1
+
+// ---------- CborVariant.h ----------
+bool   isFloat();   float  asFloat();
+bool   isDouble();  double asDouble();
+bool   isBool();    bool   asBool();
+
+// ---------- CborBuffer.h ----------
+void clear();       // rewind bump allocator
+Implementation adds ~120 LOC and does not modify existing behaviour.
+
+```
