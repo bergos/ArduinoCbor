@@ -44,6 +44,15 @@ bool CborVariant::isInteger() {
   return isValid() && (raw->type == CN_CBOR_UINT || raw->type == CN_CBOR_INT);
 }
 
+bool CborVariant::isFloat() {
+  return isValid() && raw->type == CN_CBOR_FLOAT;
+}
+
+bool CborVariant::isBool() {
+  return isValid() &&
+        (raw->type == CN_CBOR_TRUE || raw->type == CN_CBOR_FALSE);
+}
+
 bool CborVariant::isObject() {
   return isValid() && raw->type == CN_CBOR_MAP;
 }
@@ -88,6 +97,16 @@ CBOR_INT_T CborVariant::asInteger() {
   }
 
   return 0;
+}
+
+float CborVariant::asFloat() {
+  if (raw->type == CN_CBOR_FLOAT)  return raw->v.f;
+  if (raw->type == CN_CBOR_DOUBLE) return static_cast<float>(raw->v.dbl);
+  return 0.0f;
+}
+
+bool CborVariant::asBool() {
+  return raw->type == CN_CBOR_TRUE;
 }
 
 CborObject CborVariant::asObject() {
