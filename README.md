@@ -1,7 +1,7 @@
 # ArduinoCbor &nbsp;v0.0.2  
 **Floats • Doubles • Bools • Fast Buffer Reset**
 
-This patch upgrades Benoît Blanchon’s original **ArduinoCbor** wrapper with four extra, fully-backward-compatible features.
+This patch upgrades the original **ArduinoCbor** wrapper with four extra, fully-backward-compatible features.
 
 | New feature | CBOR encoding | Wire cost | Public API |
 |-------------|---------------|-----------|------------|
