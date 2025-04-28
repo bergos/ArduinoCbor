@@ -39,10 +39,12 @@ void CborObject::set(const char* key, float value) {
 void CborObject::set(const char* key, bool value) {
   cn_cbor_errback err;
 
-  cn_cbor* b = value ? cn_cbor_true_create (&buffer.context, &err)
-                     : cn_cbor_false_create(&buffer.context, &err);
-  cn_cbor_mapput_string(raw, key, b, &buffer.context, &err);
+  // Build a 0-or-1 unsigned-int node (initial byte 0x00 or 0x01)
+  cn_cbor* n = cn_cbor_int_create(value ? 1 : 0, &buffer.context, &err);
+
+  cn_cbor_mapput_string(raw, key, n, &buffer.context, &err);
 }
+
 
 
 void CborObject::set(const char* key, CborObject value) {

@@ -23,6 +23,8 @@ class CborVariant {
   bool isArray();
   bool  isFloat();
   bool  isBool();
+  bool   isDouble();
+  double asDouble();  
   float asFloat();
   bool  asBool();
 

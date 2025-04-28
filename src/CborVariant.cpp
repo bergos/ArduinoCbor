@@ -53,6 +53,10 @@ bool CborVariant::isBool() {
         (raw->type == CN_CBOR_TRUE || raw->type == CN_CBOR_FALSE);
 }
 
+bool CborVariant::isDouble() {
+  return isValid() && raw->type == CN_CBOR_DOUBLE;
+}
+
 bool CborVariant::isObject() {
   return isValid() && raw->type == CN_CBOR_MAP;
 }
@@ -107,6 +111,12 @@ float CborVariant::asFloat() {
 
 bool CborVariant::asBool() {
   return raw->type == CN_CBOR_TRUE;
+}
+
+double CborVariant::asDouble() {
+  if (raw->type == CN_CBOR_DOUBLE) return raw->v.dbl;
+  if (raw->type == CN_CBOR_FLOAT)  return static_cast<double>(raw->v.f);
+  return 0.0;
 }
 
 CborObject CborVariant::asObject() {

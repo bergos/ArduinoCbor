@@ -39,3 +39,7 @@ CborVariant CborBuffer::decode(uint8_t* data, size_t size) {
 
   return CborVariant(*this, cn_cbor_decode(data, size, &context, &err));
 }
+
+void CborBuffer::clear() {
+  offset = start;         // rewind the bump pointer
+}

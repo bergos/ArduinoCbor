@@ -10,6 +10,8 @@ class CborBuffer {
 	CborBuffer(size_t size);
   ~CborBuffer();
   
+  void clear();    
+  
   CborVariant decode(uint8_t* data, size_t size);
 
   uint8_t* alloc(size_t size);  
