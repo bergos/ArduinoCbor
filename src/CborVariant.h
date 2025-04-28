@@ -21,6 +21,10 @@ class CborVariant {
   bool isInteger();
   bool isObject();
   bool isArray();
+  bool  isFloat();
+  bool  isBool();
+  float asFloat();
+  bool  asBool();
 
   const char* asString();
   CBOR_INT_T asInteger();
