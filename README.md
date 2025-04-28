@@ -61,6 +61,6 @@ bool   isBool();    bool   asBool();
 
 // ---------- CborBuffer.h ----------
 void clear();       // rewind bump allocator
-Implementation adds ~120 LOC and does not modify existing behaviour.
 
 ```
+Implementation adds ~120 LOC and does not modify existing behaviour.
