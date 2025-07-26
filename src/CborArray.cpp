@@ -23,10 +23,30 @@ void CborArray::add(CborVariant value) {
   cn_cbor_array_append(raw, value.raw, &err);
 }
 
+void CborArray::add(bool value) {
+  add(CborVariant(buffer, value));
+}
+
 void CborArray::add(const char* value) {
   add(CborVariant(buffer, value));
 }
 
-void CborArray::add(CBOR_INT_T value) {
+void CborArray::add(double value) {
+  add(CborVariant(buffer, value));
+}
+
+void CborArray::add(float value) {
+  add(CborVariant(buffer, value));
+}
+
+void CborArray::add(int value) {
+  add(CborVariant(buffer, value));
+}
+
+void CborArray::add(long value) {
+  add(CborVariant(buffer, value));
+}
+
+void CborArray::add(unsigned int value) {
   add(CborVariant(buffer, value));
 }

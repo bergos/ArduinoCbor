@@ -4,13 +4,43 @@ CborVariant::CborVariant(CborBuffer& buffer, cn_cbor* raw) : buffer(buffer) {
   this->raw = raw;
 }
 
+CborVariant::CborVariant(CborBuffer& buffer, bool value) : buffer(buffer) {
+  cn_cbor_errback err;
+
+  raw = cn_cbor_int_create(value ? 1 : 0, &buffer.context, &err);
+}
+
 CborVariant::CborVariant(CborBuffer& buffer, const char* value) : buffer(buffer) {
   cn_cbor_errback err;
 
   raw = cn_cbor_string_create(value, &buffer.context, &err);
 }
 
-CborVariant::CborVariant(CborBuffer& buffer, CBOR_INT_T value) : buffer(buffer) {
+CborVariant::CborVariant(CborBuffer& buffer, double value) : buffer(buffer) {
+  cn_cbor_errback err;
+
+  raw = cn_cbor_double_create(value, &buffer.context, &err);
+}
+
+CborVariant::CborVariant(CborBuffer& buffer, float value) : buffer(buffer) {
+  cn_cbor_errback err;
+
+  raw = cn_cbor_float_create(value, &buffer.context, &err);
+}
+
+CborVariant::CborVariant(CborBuffer& buffer, int value) : buffer(buffer) {
+  cn_cbor_errback err;
+
+  raw = cn_cbor_int_create(value, &buffer.context, &err);
+}
+
+CborVariant::CborVariant(CborBuffer& buffer, long value) : buffer(buffer) {
+  cn_cbor_errback err;
+
+  raw = cn_cbor_int_create(value, &buffer.context, &err);
+}
+
+CborVariant::CborVariant(CborBuffer& buffer, unsigned int value) : buffer(buffer) {
   cn_cbor_errback err;
 
   raw = cn_cbor_int_create(value, &buffer.context, &err);
@@ -36,8 +66,20 @@ bool CborVariant::isValid() {
   return raw != 0;
 }
 
+bool CborVariant::isBool() {
+  return isValid() && (raw->type == CN_CBOR_TRUE || raw->type == CN_CBOR_FALSE);
+}
+
 bool CborVariant::isString() {
   return isValid() && (raw->type == CN_CBOR_BYTES || raw->type == CN_CBOR_TEXT);
+}
+
+bool CborVariant::isDouble() {
+  return isValid() && raw->type == CN_CBOR_DOUBLE;
+}
+
+bool CborVariant::isFloat() {
+  return isValid() && raw->type == CN_CBOR_FLOAT;
 }
 
 bool CborVariant::isInteger() {
@@ -50,6 +92,14 @@ bool CborVariant::isObject() {
 
 bool CborVariant::isArray() {
   return isValid() && raw->type == CN_CBOR_ARRAY;
+}
+
+bool CborVariant::asBool() {
+  if (!isValid() || !isBool()) {
+    return false;
+  }
+
+  return raw->type == CN_CBOR_TRUE;
 }
 
 const char* CborVariant::asString() {
@@ -74,7 +124,39 @@ const char* CborVariant::asString() {
   return raw->v.str;
 }
 
-CBOR_INT_T CborVariant::asInteger() {
+double CborVariant::asDouble() {
+  if (!isValid()) {
+    return NAN;
+  }
+
+  if (isDouble()) {
+    return raw->v.dbl;
+  }
+
+  if (isFloat()) {
+    return raw->v.f;
+  }
+
+  return NAN;
+}
+
+float CborVariant::asFloat() {
+  if (!isValid()) {
+    return NAN;
+  }
+
+  if (isDouble()) {
+    return raw->v.dbl;
+  }
+
+  if (isFloat()) {
+    return raw->v.f;
+  }
+
+  return NAN;
+}
+
+long CborVariant::asInteger() {
   if (!isValid()) {
     return 0;
   }

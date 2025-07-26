@@ -9,21 +9,32 @@ class CborVariant {
 
  public:
   CborVariant(CborBuffer& buffer, cn_cbor* raw);
+  CborVariant(CborBuffer& buffer, bool value);
   CborVariant(CborBuffer& buffer, const char* value);
-  CborVariant(CborBuffer& buffer, CBOR_INT_T value);
+  CborVariant(CborBuffer& buffer, double value);
+  CborVariant(CborBuffer& buffer, float value);
+  CborVariant(CborBuffer& buffer, int value);
+  CborVariant(CborBuffer& buffer, long value);
+  CborVariant(CborBuffer& buffer, unsigned int value);
   CborVariant(CborBuffer& buffer, CborObject& value);
   CborVariant(CborBuffer& buffer, CborArray& value);
 
   int length();
 
   bool isValid();
+  bool isBool();
   bool isString();
+  bool isDouble();
+  bool isFloat();
   bool isInteger();
   bool isObject();
   bool isArray();
 
+  bool asBool();
   const char* asString();
-  CBOR_INT_T asInteger();
+  double asDouble();
+  float asFloat();
+  long asInteger();
   CborObject asObject();
   CborArray asArray();
 
