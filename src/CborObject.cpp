@@ -10,6 +10,14 @@ CborObject::CborObject(CborBuffer& buffer, cn_cbor* raw) : buffer(buffer) {
   }
 }
 
+CborObject::~CborObject() {
+  if (raw->parent == 0) {
+    cn_cbor_free(this->raw, &buffer.context);
+  }
+
+  this->raw = 0;
+}
+
 CborVariant CborObject::get(const char* key) {
   return CborVariant(buffer, cn_cbor_mapget_string(raw, key));
 }
