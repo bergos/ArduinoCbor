@@ -13,8 +13,13 @@ class CborObject {
   CborVariant get(const char* key);
 
   void set(const char* key, CborVariant value);
+  void set(const char* key, bool  value);
   void set(const char* key, const char* value);
-  void set(const char* key, CBOR_INT_T value);
+  void set(const char* key, double value);
+  void set(const char* key, float value);
+  void set(const char* key, int value);
+  void set(const char* key, long value);
+  void set(const char* key, unsigned int value);
   void set(const char* key, CborObject value);
   void set(const char* key, CborArray value);
 

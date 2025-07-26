@@ -28,11 +28,31 @@ void CborObject::set(const char* key, CborVariant value) {
   cn_cbor_mapput_string(raw, key, value.raw, &buffer.context, &err);
 }
 
+void CborObject::set(const char* key, bool value) {
+  set(key, CborVariant(buffer, value));
+}
+
 void CborObject::set(const char* key, const char* value) {
   set(key, CborVariant(buffer, value));
 }
 
-void CborObject::set(const char* key, CBOR_INT_T value) {
+void CborObject::set(const char* key, double value) {
+  set(key, CborVariant(buffer, value));
+}
+
+void CborObject::set(const char* key, float value) {
+  set(key, CborVariant(buffer, value));
+}
+
+void CborObject::set(const char* key, int value) {
+  set(key, CborVariant(buffer, value));
+}
+
+void CborObject::set(const char* key, long value) {
+  set(key, CborVariant(buffer, value));
+}
+
+void CborObject::set(const char* key, unsigned int value) {
   set(key, CborVariant(buffer, value));
 }
 

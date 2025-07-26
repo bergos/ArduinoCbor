@@ -12,8 +12,13 @@ class CborArray {
   CborVariant get(int index);
 
   void add(CborVariant value);
+  void add(bool value);
   void add(const char* value);
-  void add(CBOR_INT_T value);
+  void add(double value);
+  void add(float value);
+  void add(int value);
+  void add(long value);
+  void add(unsigned int value);
 
  protected:
   CborBuffer& buffer;
