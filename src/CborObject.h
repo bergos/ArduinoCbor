@@ -8,6 +8,7 @@ class CborObject {
 
  public:
   CborObject(CborBuffer& buffer, cn_cbor* raw=0);
+  ~CborObject();
 
   CborVariant get(const char* key);
 
